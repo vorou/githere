@@ -14,29 +14,34 @@ namespace vorou.githere
     [Guid(GuidList.guidgitherePkgString)]
     public sealed class GitherePackage : Package
     {
+        private IVsStatusbar statusBar;
+        private IVsStatusbar StatusBar
+        {
+            get
+            {
+                if (statusBar == null)
+                    statusBar = GetService(typeof (SVsStatusbar)) as IVsStatusbar;
+
+                return statusBar;
+            }
+        }
+
         protected override void Initialize()
         {
             base.Initialize();
 
             var mcs = GetService(typeof (IMenuCommandService)) as OleMenuCommandService;
-            if (null != mcs)
-            {
-                var menuCommandId = new CommandID(GuidList.guidgithereCmdSet, (int) PkgCmdIDList.cmdidGithere);
-                var menuItem = new MenuCommand(MenuItemCallback, menuCommandId);
-                mcs.AddCommand(menuItem);
-            }
+            if (mcs == null)
+                return;
+
+            var menuCommandId = new CommandID(GuidList.guidgithereCmdSet, (int) PkgCmdIDList.cmdidGithere);
+            var menuItem = new MenuCommand(MenuItemCallback, menuCommandId);
+            mcs.AddCommand(menuItem);
         }
 
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            var outputWindow = GetGlobalService(typeof (SVsOutputWindow)) as IVsOutputWindow;
-
-            var guidGeneral = VSConstants.OutputWindowPaneGuid.GeneralPane_guid;
-            IVsOutputWindowPane pane;
-            outputWindow.CreatePane(guidGeneral, "General", 1, 0);
-            outputWindow.GetPane(guidGeneral, out pane);
-            pane.Activate();
-            pane.OutputString("Pandy!");
+            WriteToStatusBar("privet!");
 
             var uiShell = (IVsUIShell) GetService(typeof (SVsUIShell));
             var clsid = Guid.Empty;
@@ -52,6 +57,14 @@ namespace vorou.githere
                                                                OLEMSGICON.OLEMSGICON_INFO,
                                                                0,
                                                                out result));
+        }
+
+        private void WriteToStatusBar(string privet)
+        {
+            int frozen;
+            StatusBar.IsFrozen(out frozen);
+            if (frozen == 0)
+                StatusBar.SetText(privet);
         }
     }
 }
