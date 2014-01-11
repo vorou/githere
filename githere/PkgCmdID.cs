@@ -1,13 +1,10 @@
 ﻿// PkgCmdID.cs
 // MUST match PkgCmdID.h
-using System;
 
 namespace vorou.githere
 {
-    static class PkgCmdIDList
+    internal static class PkgCmdIDList
     {
-        public const uint cmdidGithere =        0x100;
-
-
+        public const uint cmdidGithere = 0x100;
     };
 }

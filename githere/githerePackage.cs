@@ -1,13 +1,11 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.ComponentModel.Design;
-using Microsoft.Win32;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace vorou.githere
 {
@@ -44,10 +42,6 @@ namespace vorou.githere
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
-
-
-        /////////////////////////////////////////////////////////////////////////////
-        // Overridden Package Implementation
         #region Package Members
 
         /// <summary>
@@ -56,20 +50,24 @@ namespace vorou.githere
         /// </summary>
         protected override void Initialize()
         {
-            Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
+            Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
             // Add our command handlers for menu (commands must exist in the .vsct file)
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if ( null != mcs )
+            var mcs = GetService(typeof (IMenuCommandService)) as OleMenuCommandService;
+            if (null != mcs)
             {
                 // Create the command for the menu item.
-                CommandID menuCommandID = new CommandID(GuidList.guidgithereCmdSet, (int)PkgCmdIDList.cmdidGithere);
-                MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
-                mcs.AddCommand( menuItem );
+                var menuCommandID = new CommandID(GuidList.guidgithereCmdSet, (int) PkgCmdIDList.cmdidGithere);
+                var menuItem = new MenuCommand(MenuItemCallback, menuCommandID);
+                mcs.AddCommand(menuItem);
             }
         }
+
         #endregion
+
+        /////////////////////////////////////////////////////////////////////////////
+        // Overridden Package Implementation
 
         /// <summary>
         /// This function is the callback used to execute a command when the a menu item is clicked.
@@ -79,22 +77,21 @@ namespace vorou.githere
         private void MenuItemCallback(object sender, EventArgs e)
         {
             // Show a Message Box to prove we were here
-            IVsUIShell uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
-            Guid clsid = Guid.Empty;
+            var uiShell = (IVsUIShell) GetService(typeof (SVsUIShell));
+            var clsid = Guid.Empty;
             int result;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
-                       0,
-                       ref clsid,
-                       "githere",
-                       string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.ToString()),
-                       string.Empty,
-                       0,
-                       OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                       OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                       OLEMSGICON.OLEMSGICON_INFO,
-                       0,        // false
-                       out result));
+            ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(0,
+                                                               ref clsid,
+                                                               "githere",
+                                                               string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.ToString()),
+                                                               string.Empty,
+                                                               0,
+                                                               OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                                                               OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
+                                                               OLEMSGICON.OLEMSGICON_INFO,
+                                                               0,
+                                                               // false
+                                                               out result));
         }
-
     }
 }
