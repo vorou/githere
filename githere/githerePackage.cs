@@ -24,6 +24,16 @@ namespace vorou.githere
             }
         }
 
+        public string GetSlnPath()
+        {
+            var slnService = GetService(typeof (IVsSolution)) as IVsSolution;
+            string slnDir;
+            string slnFile;
+            string slnOptions;
+            slnService.GetSolutionInfo(out slnDir, out slnFile, out slnOptions);
+            return slnDir;
+        }
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -43,7 +53,7 @@ namespace vorou.githere
 
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            WriteToStatusBar("privet!");
+            WriteToStatusBar(GetSlnPath());
         }
 
         private void WriteToStatusBar(string privet)
