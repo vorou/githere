@@ -9,7 +9,7 @@ namespace vorou.githere
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(GuidList.guidgitherePkgString)]
+    [Guid(GuidList.guidGitherePkgString)]
     public sealed class GitherePackage : Package
     {
         private IVsStatusbar statusBar;
