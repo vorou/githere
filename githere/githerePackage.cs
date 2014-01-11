@@ -28,7 +28,7 @@ namespace vorou.githere
     // This attribute is needed to let the shell know that this package exposes some menus.
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(GuidList.guidgitherePkgString)]
-    public sealed class githerePackage : Package
+    public sealed class GitherePackage : Package
     {
         /// <summary>
         /// Default constructor of the package.
@@ -37,7 +37,7 @@ namespace vorou.githere
         /// not sited yet inside Visual Studio environment. The place to do all the other 
         /// initialization is the Initialize method.
         /// </summary>
-        public githerePackage()
+        public GitherePackage()
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
