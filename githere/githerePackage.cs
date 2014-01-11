@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Runtime.InteropServices;
+using LibGit2Sharp;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -12,32 +14,20 @@ namespace vorou.githere
     [Guid(GuidList.guidGitherePkgString)]
     public sealed class GitherePackage : Package
     {
-        private IVsStatusbar statusBar;
-        private IVsStatusbar StatusBar
+        protected override void Initialize()
         {
-            get
-            {
-                if (statusBar == null)
-                    statusBar = GetService(typeof (SVsStatusbar)) as IVsStatusbar;
-
-                return statusBar;
-            }
+            base.Initialize();
+            AddMenuItem();
         }
 
-        public string GetSlnPath()
+        private string GetRepoDir()
         {
             var slnService = GetService(typeof (IVsSolution)) as IVsSolution;
             string slnDir;
             string slnFile;
             string slnOptions;
             slnService.GetSolutionInfo(out slnDir, out slnFile, out slnOptions);
-            return slnDir;
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
-            AddMenuItem();
+            return new DirectoryInfo(slnDir).Parent.FullName;
         }
 
         private void AddMenuItem()
@@ -53,15 +43,22 @@ namespace vorou.githere
 
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            WriteToStatusBar(GetSlnPath());
+            WriteToStatusBar(GetCurrentBranchName(GetRepoDir()));
+        }
+
+        private static string GetCurrentBranchName(string repoDir)
+        {
+            using (var repo = new Repository(repoDir))
+                return repo.Head.Name;
         }
 
         private void WriteToStatusBar(string privet)
         {
+            var statusBar = GetService(typeof (SVsStatusbar)) as IVsStatusbar;
             int frozen;
-            StatusBar.IsFrozen(out frozen);
+            statusBar.IsFrozen(out frozen);
             if (frozen == 0)
-                StatusBar.SetText(privet);
+                statusBar.SetText(privet);
         }
     }
 }
