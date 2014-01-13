@@ -15,15 +15,17 @@ namespace vorou.githere
     [Guid(GuidList.guidGitherePkgString)]
     public sealed class GitherePackage : Package
     {
+        private DTE dte;
+
         protected override void Initialize()
         {
             base.Initialize();
+            dte = GetGlobalService(typeof (SDTE)) as DTE;
             AddMenuItem();
         }
 
-        private static string GetRepoDir()
+        private string GetRepoDir()
         {
-            var dte = GetGlobalService(typeof (SDTE)) as DTE;
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
             return new DirectoryInfo(slnDir).Parent.FullName;
         }
@@ -50,13 +52,9 @@ namespace vorou.githere
                 return repo.Head.Name;
         }
 
-        private void WriteToStatusBar(string privet)
+        private void WriteToStatusBar(string message)
         {
-            var statusBar = GetService(typeof (SVsStatusbar)) as IVsStatusbar;
-            int frozen;
-            statusBar.IsFrozen(out frozen);
-            if (frozen == 0)
-                statusBar.SetText(privet);
+            dte.StatusBar.Text = message;
         }
     }
 }
