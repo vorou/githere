@@ -22,20 +22,17 @@ namespace vorou.githere
             base.Initialize();
             dte = GetGlobalService(typeof (SDTE)) as DTE;
             solutionEvents = dte.Events.SolutionEvents;
-            solutionEvents.Opened += SolutionEventsOnOpened;
+            solutionEvents.Opened += OnSolutionOpened;
         }
 
-        private void SolutionEventsOnOpened()
+        private void OnSolutionOpened()
         {
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
-            var headName = GetHeadName(new DirectoryInfo(slnDir).Parent.FullName);
-            dte.StatusBar.Text = string.Format("[{0}]", headName);
-        }
-
-        private static string GetHeadName(string repoDir)
-        {
-            using (var repo = new Repository(repoDir))
-                return repo.Head.Name;
+            using (var repo = new Repository(new DirectoryInfo(slnDir).Parent.FullName))
+            {
+                var headName = repo.Head.Name;
+                dte.StatusBar.Text = string.Format("[{0}]", headName);
+            }
         }
     }
 }
