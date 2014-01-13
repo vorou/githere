@@ -29,7 +29,7 @@ namespace vorou.githere
         {
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
             var headName = GetHeadName(new DirectoryInfo(slnDir).Parent.FullName);
-            dte.StatusBar.Text = headName;
+            dte.StatusBar.Text = string.Format("[{0}]", headName);
         }
 
         private static string GetHeadName(string repoDir)
