@@ -6,6 +6,7 @@ using LibGit2Sharp;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using Thread = System.Threading.Thread;
 
 namespace vorou.githere
 {
@@ -38,7 +39,7 @@ namespace vorou.githere
             {
                 statusBar.SetText(string.Format("[{0} ~{1}]", repo.Head.Name, repo.Index.RetrieveStatus().Modified.Count()));
                 statusBar.FreezeOutput(1);
-                Task.Delay(1000);
+                Thread.Sleep(3000);
                 statusBar.FreezeOutput(0);
             }
         }
