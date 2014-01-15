@@ -1,7 +1,11 @@
 githere
 =======
 
-What I'm basically after is [Posh-Git](https://github.com/dahlbyk/posh-git)-like status summary (`[master +0 ~2 -1 | +1 ~1 -0]`) in VS statusbar. It looks like [there is no such thing](http://stackoverflow.com/questions/21060696/is-there-vs-analogue-for-vims-powerline) at the moment.
+What I'm basically after is [Posh-Git](https://github.com/dahlbyk/posh-git)-like status summary in VS statusbar:
+
+`[master +0 ~2 -1 | +1 ~1 -0]`
+
+It looks like [there is no such thing](http://stackoverflow.com/questions/21060696/is-there-vs-analogue-for-vims-powerline) at the moment.
 
 status
 ======
