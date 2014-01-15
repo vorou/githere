@@ -40,11 +40,28 @@ namespace vorou.githere
         private void UpdateGitStatus()
         {
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
-            using (var repo = new Repository(new DirectoryInfo(slnDir).Parent.FullName))
+            var repoDir = GetRepoDir(slnDir);
+            if (repoDir == null)
+                return;
+            using (var repo = new Repository(repoDir))
             {
                 var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
                 var statusString = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
                 statusBarService.SetText(statusString);
+            }
+        }
+
+        private static string GetRepoDir(string slnDir)
+        {
+            var current = slnDir;
+            while (true)
+            {
+                if (Repository.IsValid(current))
+                    return current;
+                var parent = new DirectoryInfo(current).Parent;
+                if (parent == null)
+                    return null;
+                current = parent.FullName;
             }
         }
 
