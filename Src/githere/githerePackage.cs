@@ -42,8 +42,13 @@ namespace vorou.githere
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
             using (var repo = new Repository(new DirectoryInfo(slnDir).Parent.FullName))
             {
-                var gitStatus = string.Format("[{0} ~{1}]", repo.Head.Name, repo.Index.RetrieveStatus().Modified.Count());
-                statusBarService.SetText(gitStatus);
+                var repoStatus = repo.Index.RetrieveStatus();
+                var statusString = string.Format("[{0} +{1} ~{2} -{3}]",
+                                                 repo.Head.Name,
+                                                 repoStatus.Untracked.Count(),
+                                                 repoStatus.Modified.Count(),
+                                                 repoStatus.Missing.Count());
+                statusBarService.SetText(statusString);
             }
         }
     }
