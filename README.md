@@ -8,7 +8,7 @@ git status summary in VS statusbar
 status
 ======
 
-NOT TESTED AT ALL, it will steal your soul and set your machine on fire, use at your risk.
+**NOT TESTED AT ALL**, it will steal your soul and set your machine on fire, use at your own risk.
 
 installation
 ============
