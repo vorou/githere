@@ -1,13 +1,10 @@
 githere
 =======
 
-What I'm basically after is [Posh-Git](https://github.com/dahlbyk/posh-git)-like status summary in VS statusbar:
-
-`[master +0 ~2 -1 | +1 ~1 -0]`
-
-It looks like [there is no such thing](http://stackoverflow.com/questions/21060696/is-there-vs-analogue-for-vims-powerline) at the moment.
+git status summary in VS statusbar
+![scr](http://i.imgur.com/w2A3MVz.png)
 
 status
 ======
 
-I've just hacked up some ugly dirtiness to be able to write current branch name into status bar on menu command. Nothing usable here yet.
+NOT TESTED AT ALL, it will steal your soul and set your machine on fire, use at your risk.
