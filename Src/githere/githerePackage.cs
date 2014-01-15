@@ -1,12 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Threading;
 using EnvDTE;
 using LibGit2Sharp;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Task = System.Threading.Tasks.Task;
-using Thread = System.Threading.Thread;
 
 namespace vorou.githere
 {
@@ -17,30 +17,33 @@ namespace vorou.githere
     [Guid(GuidList.guidGitherePkgString)]
     public sealed class GitherePackage : Package
     {
-        private DocumentEvents documentEvents;
         private DTE dte;
-        private SolutionEvents solutionEvents;
+        private StatusBarService statusBarService;
+        private DispatcherTimer timer;
 
         protected override void Initialize()
         {
             base.Initialize();
             dte = GetGlobalService(typeof (SDTE)) as DTE;
-            solutionEvents = dte.Events.SolutionEvents;
-            solutionEvents.Opened += UpdateGitStatus;
-            documentEvents = dte.Events.DocumentEvents;
-            documentEvents.DocumentSaved += _ => UpdateGitStatus();
+            statusBarService = new StatusBarService(GetService(typeof (SVsStatusbar)) as IVsStatusbar);
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Tick += (o, e) => UpdateGitStatus();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
         }
 
         private void UpdateGitStatus()
         {
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
-            var statusBar = GetService(typeof (SVsStatusbar)) as IVsStatusbar;
             using (var repo = new Repository(new DirectoryInfo(slnDir).Parent.FullName))
             {
-                statusBar.SetText(string.Format("[{0} ~{1}]", repo.Head.Name, repo.Index.RetrieveStatus().Modified.Count()));
-                statusBar.FreezeOutput(1);
-                Thread.Sleep(3000);
-                statusBar.FreezeOutput(0);
+                var gitStatus = string.Format("[{0} ~{1}]", repo.Head.Name, repo.Index.RetrieveStatus().Modified.Count());
+                statusBarService.SetText(gitStatus);
             }
         }
     }
