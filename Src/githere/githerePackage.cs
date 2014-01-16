@@ -17,16 +17,23 @@ namespace vorou.githere
     [Guid(GuidList.guidGitherePkgString)]
     public sealed class GitherePackage : Package
     {
+        private const string LogFile = @"C:\logs\githere.log";
         private DTE dte;
+        private SolutionEvents solutionEvents;
         private StatusBarService statusBarService;
         private DispatcherTimer timer;
 
         protected override void Initialize()
         {
+            if (File.Exists(LogFile))
+                File.Delete(LogFile);
+            Log("Initialize was called.");
             base.Initialize();
             dte = GetGlobalService(typeof (SDTE)) as DTE;
             statusBarService = new StatusBarService(GetService(typeof (SVsStatusbar)) as IVsStatusbar);
-            StartTimer();
+            solutionEvents = dte.Events.SolutionEvents;
+            solutionEvents.BeforeClosing += StopTimer;
+            solutionEvents.Opened += StartTimer;
         }
 
         private void StartTimer()
@@ -35,19 +42,33 @@ namespace vorou.githere
             timer.Tick += (o, e) => UpdateGitStatus();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
+            Log("Timer started.");
+        }
+
+        private void StopTimer()
+        {
+            timer.Stop();
+            Log("Timer stopped.");
         }
 
         private void UpdateGitStatus()
         {
+            Log("Locating repository...");
             var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
+            Log("Starting from " + slnDir);
             var repoDir = GetRepoDir(slnDir);
             if (repoDir == null)
+            {
+                Log("Failed to locate repository!");
                 return;
+            }
+            Log("Found repository at " + repoDir);
             using (var repo = new Repository(repoDir))
             {
                 var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
                 var statusString = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
                 statusBarService.SetText(statusString);
+                Log("Statusbar updated to " + statusString);
             }
         }
 
@@ -74,6 +95,11 @@ namespace vorou.githere
                 return "";
 
             return string.Format(" +{0} ~{1} -{2}", untracked, modified, missing);
+        }
+
+        private static void Log(string msg)
+        {
+            File.AppendAllText(LogFile, msg + "\r\n");
         }
     }
 }
