@@ -19,50 +19,44 @@ namespace vorou.githere
     {
         private const string LogFile = @"C:\logs\githere.log";
         private DTE dte;
+        private string repoDir;
         private SolutionEvents solutionEvents;
         private StatusBarService statusBarService;
         private DispatcherTimer timer;
 
         protected override void Initialize()
         {
+            base.Initialize();
             if (File.Exists(LogFile))
                 File.Delete(LogFile);
             Log("Initialize was called.");
-            base.Initialize();
             dte = GetGlobalService(typeof (SDTE)) as DTE;
             statusBarService = new StatusBarService(GetService(typeof (SVsStatusbar)) as IVsStatusbar);
             solutionEvents = dte.Events.SolutionEvents;
-            solutionEvents.BeforeClosing += StopTimer;
-            solutionEvents.Opened += StartTimer;
+            solutionEvents.BeforeClosing += StopStatusUpdater;
+            solutionEvents.Opened += StartStatusUpdater;
         }
 
-        private void StartTimer()
+        private void StartStatusUpdater()
         {
+            repoDir = GetCurrentRepoDir();
+            if (repoDir == null)
+                return;
             timer = new DispatcherTimer();
             timer.Tick += (o, e) => UpdateGitStatus();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
-            Log("Timer started.");
+            Log("Status updating started.");
         }
 
-        private void StopTimer()
+        private void StopStatusUpdater()
         {
             timer.Stop();
-            Log("Timer stopped.");
+            Log("Status updating stopped.");
         }
 
         private void UpdateGitStatus()
         {
-            Log("Locating repository...");
-            var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
-            Log("Starting from " + slnDir);
-            var repoDir = GetRepoDir(slnDir);
-            if (repoDir == null)
-            {
-                Log("Failed to locate repository!");
-                return;
-            }
-            Log("Found repository at " + repoDir);
             using (var repo = new Repository(repoDir))
             {
                 var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
@@ -70,6 +64,19 @@ namespace vorou.githere
                 statusBarService.SetText(statusString);
                 Log("Statusbar updated to " + statusString);
             }
+        }
+
+        private string GetCurrentRepoDir()
+        {
+            Log("Locating repository...");
+            var slnDir = Path.GetDirectoryName(dte.Solution.FullName);
+            Log("Starting from " + slnDir);
+            var repoDir = GetRepoDir(slnDir);
+            if (repoDir != null)
+                Log("Found repository at " + repoDir);
+            else
+                Log("Failed to locate repository!");
+            return repoDir;
         }
 
         private static string GetRepoDir(string slnDir)
