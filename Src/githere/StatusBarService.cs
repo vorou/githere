@@ -4,7 +4,7 @@ namespace vorou.githere
 {
     public class StatusBarService
     {
-        private IVsStatusbar statusBar;
+        private readonly IVsStatusbar statusBar;
 
         public StatusBarService(IVsStatusbar statusBar)
         {
