@@ -19,14 +19,6 @@ namespace vorou.githere
             }
         }
 
-        public void Clear()
-        {
-            if (!IsFrozen)
-            {
-                statusBar.Clear();
-            }
-        }
-
         private bool IsFrozen
         {
             get
