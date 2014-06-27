@@ -3,9 +3,8 @@
   <Metadata>
     <Identity Id="githere..f2c2f397-96f7-4aa0-95e2-2494689d8b5b" Version="0.1.0" Language="en-US" Publisher="vorou" />
     <DisplayName>githere</DisplayName>
-    <Description xml:space="preserve">essential git info in VS statusbar, neither bells nor whistles includedessential git 
-    <MoreInfo>https://github.com/vorou/githere</MoreInfo>
-    <License>MIT</License>info in VS statusbar, neither bells nor whistles includedessential git info in VS statusbar, neither bells nor whistles included</Description>
+    <Description xml:space="preserve">essential git info in VS statusbar, neither bells nor whistles included</Description>
+    <MoreInfo>    https://github.com/vorou/githere</MoreInfo>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
