@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="githere..f2c2f397-96f7-4aa0-95e2-2494689d8b5b" Version="0.1.0" Language="en-US" Publisher="vorou" />
+    <Identity Id="githere..9cbe2bf7-1f20-4097-812f-391d058fa8ec" Version="1.0" Language="en-US" Publisher="vorou" />
     <DisplayName>githere</DisplayName>
-    <Description xml:space="preserve">essential git info in VS statusbar, neither bells nor whistles included</Description>
-    <MoreInfo>    https://github.com/vorou/githere</MoreInfo>
+    <Description>This is a sample margin extension to the Visual Studio Editor.</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />

@@ -12,7 +12,7 @@
     <ProductVersion>10.0.20305</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{757DE496-87DF-4317-8B8D-0A2E7F7EB23C}</ProjectGuid>
+    <ProjectGuid>{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>githere</RootNamespace>
@@ -57,7 +57,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Githere.cs" />
+    <Compile Include="githere.cs" />
     <Compile Include="githereFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
