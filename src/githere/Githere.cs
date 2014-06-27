@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Microsoft.VisualStudio.Text.Editor;
@@ -8,10 +9,9 @@ namespace githere
     /// <summary>
     /// A class detailing the margin's visual definition including both size and content.
     /// </summary>
-    class githere : Canvas, IWpfTextViewMargin
+    internal class githere : Canvas, IWpfTextViewMargin
     {
         public const string MarginName = "githere";
-        private IWpfTextView _textView;
         private bool _isDisposed = false;
 
         /// <summary>
@@ -20,33 +20,22 @@ namespace githere
         /// <param name="textView">The <see cref="IWpfTextView"/> to attach the margin to.</param>
         public githere(IWpfTextView textView)
         {
-            _textView = textView;
-
             this.Height = 20;
             this.ClipToBounds = true;
             this.Background = new SolidColorBrush(Colors.LightGreen);
 
             // Add a green colored label that says "Hello World!"
-            Label label = new Label();
+            var label = new Label();
             label.Background = new SolidColorBrush(Colors.LightGreen);
             label.Content = "Hello World!";
             this.Children.Add(label);
-
         }
-
-        private void ThrowIfDisposed()
-        {
-            if (_isDisposed)
-                throw new ObjectDisposedException(MarginName);
-        }
-
-        #region IWpfTextViewMargin Members
 
         /// <summary>
         /// The <see cref="Sytem.Windows.FrameworkElement"/> that implements the visual representation
         /// of the margin.
         /// </summary>
-        public System.Windows.FrameworkElement VisualElement
+        public FrameworkElement VisualElement
         {
             // Since this margin implements Canvas, this is the object which renders
             // the margin.
@@ -56,10 +45,6 @@ namespace githere
                 return this;
             }
         }
-
-        #endregion
-
-        #region ITextViewMargin Members
 
         public double MarginSize
         {
@@ -89,7 +74,7 @@ namespace githere
         /// <returns>An instance of githere or null</returns>
         public ITextViewMargin GetTextViewMargin(string marginName)
         {
-            return (marginName == githere.MarginName) ? (IWpfTextViewMargin)this : null;
+            return (marginName == MarginName) ? (IWpfTextViewMargin) this : null;
         }
 
         public void Dispose()
@@ -100,6 +85,11 @@ namespace githere
                 _isDisposed = true;
             }
         }
-        #endregion
+
+        private void ThrowIfDisposed()
+        {
+            if (_isDisposed)
+                throw new ObjectDisposedException(MarginName);
+        }
     }
 }
