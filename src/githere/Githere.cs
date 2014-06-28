@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using LibGit2Sharp;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -17,6 +18,7 @@ namespace githere
     {
         public const string MarginName = "githere";
         private readonly Repository repo;
+        private readonly Label statusLabel;
         private bool _isDisposed;
 
         /// <summary>
@@ -28,14 +30,19 @@ namespace githere
             Height = 20;
             ClipToBounds = true;
             Background = new SolidColorBrush(Colors.LightGreen);
+            statusLabel = new Label {Background = new SolidColorBrush(Colors.LightGreen)};
+            Children.Add(statusLabel);
 
             repo = GetRepo(textView);
-            Children.Add(new Label {Background = new SolidColorBrush(Colors.LightGreen), Content = GetRepoStatus()});
-            //            var timer = new DispatcherTimer();
-            //            var i = 0;
-            //            timer.Tick += (o, e) => Children.Add(new Label {Background = new SolidColorBrush(Colors.LightGreen), Content = Guid.NewGuid()});
-            //            timer.Interval = TimeSpan.FromSeconds(1);
-            //            timer.Start();
+            if (repo == null)
+            {
+                Visibility = Visibility.Collapsed;
+                return;
+            }
+            var timer = new DispatcherTimer();
+            timer.Tick += (o, e) => statusLabel.Content = GetRepoStatus();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
         }
 
         /// <summary>
@@ -93,12 +100,13 @@ namespace githere
             }
         }
 
-        private Repository GetRepo(IWpfTextView textView)
+        private static Repository GetRepo(IWpfTextView textView)
         {
             ITextDocument document;
             textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(typeof (ITextDocument), out document);
             var workingDir = Path.GetDirectoryName(document.FilePath);
-            return new Repository(Repository.Discover(workingDir));
+            var repoDir = Repository.Discover(workingDir);
+            return repoDir == null ? null : new Repository(repoDir);
         }
 
         private string GetRepoStatus()
