@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using LibGit2Sharp;
+using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
 namespace githere
@@ -12,7 +16,8 @@ namespace githere
     internal class githere : Canvas, IWpfTextViewMargin
     {
         public const string MarginName = "githere";
-        private bool _isDisposed = false;
+        private readonly Repository repo;
+        private bool _isDisposed;
 
         /// <summary>
         /// Creates a <see cref="githere"/> for a given <see cref="IWpfTextView"/>.
@@ -20,15 +25,17 @@ namespace githere
         /// <param name="textView">The <see cref="IWpfTextView"/> to attach the margin to.</param>
         public githere(IWpfTextView textView)
         {
-            this.Height = 20;
-            this.ClipToBounds = true;
-            this.Background = new SolidColorBrush(Colors.LightGreen);
+            Height = 20;
+            ClipToBounds = true;
+            Background = new SolidColorBrush(Colors.LightGreen);
 
-            // Add a green colored label that says "Hello World!"
-            var label = new Label();
-            label.Background = new SolidColorBrush(Colors.LightGreen);
-            label.Content = "Hello World!";
-            this.Children.Add(label);
+            repo = GetRepo(textView);
+            Children.Add(new Label {Background = new SolidColorBrush(Colors.LightGreen), Content = GetRepoStatus()});
+            //            var timer = new DispatcherTimer();
+            //            var i = 0;
+            //            timer.Tick += (o, e) => Children.Add(new Label {Background = new SolidColorBrush(Colors.LightGreen), Content = Guid.NewGuid()});
+            //            timer.Interval = TimeSpan.FromSeconds(1);
+            //            timer.Start();
         }
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace githere
             get
             {
                 ThrowIfDisposed();
-                return this.ActualHeight;
+                return ActualHeight;
             }
         }
 
@@ -74,7 +81,7 @@ namespace githere
         /// <returns>An instance of githere or null</returns>
         public ITextViewMargin GetTextViewMargin(string marginName)
         {
-            return (marginName == MarginName) ? (IWpfTextViewMargin) this : null;
+            return (marginName == MarginName) ? this : null;
         }
 
         public void Dispose()
@@ -84,6 +91,36 @@ namespace githere
                 GC.SuppressFinalize(this);
                 _isDisposed = true;
             }
+        }
+
+        private Repository GetRepo(IWpfTextView textView)
+        {
+            ITextDocument document;
+            textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(typeof (ITextDocument), out document);
+            var workingDir = Path.GetDirectoryName(document.FilePath);
+            return new Repository(Repository.Discover(workingDir));
+        }
+
+        private string GetRepoStatus()
+        {
+            var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
+            return string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
+        }
+
+        private static string FormatWorkingDirStatus(RepositoryStatus index)
+        {
+            var untracked = index.Untracked.Count();
+            var modified = index.Modified.Count();
+            var missing = index.Missing.Count();
+            if (untracked == 0 && modified == 0 && missing == 0)
+                return "";
+
+            return string.Format(" +{0} ~{1} -{2}", untracked, modified, missing);
+        }
+
+        private static void Log(string msg)
+        {
+            File.AppendAllText(@"c:\logs\githere.log", msg + "\r\n");
         }
 
         private void ThrowIfDisposed()
