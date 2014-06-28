@@ -11,9 +11,6 @@ using Microsoft.VisualStudio.Text.Editor;
 
 namespace githere
 {
-    /// <summary>
-    /// A class detailing the margin's visual definition including both size and content.
-    /// </summary>
     internal class githere : Canvas, IWpfTextViewMargin
     {
         public const string MarginName = "githere";
@@ -21,10 +18,6 @@ namespace githere
         private readonly Label statusLabel;
         private bool _isDisposed;
 
-        /// <summary>
-        /// Creates a <see cref="githere"/> for a given <see cref="IWpfTextView"/>.
-        /// </summary>
-        /// <param name="textView">The <see cref="IWpfTextView"/> to attach the margin to.</param>
         public githere(IWpfTextView textView)
         {
             Height = 20;
@@ -45,14 +38,8 @@ namespace githere
             timer.Start();
         }
 
-        /// <summary>
-        /// The <see cref="Sytem.Windows.FrameworkElement"/> that implements the visual representation
-        /// of the margin.
-        /// </summary>
         public FrameworkElement VisualElement
         {
-            // Since this margin implements Canvas, this is the object which renders
-            // the margin.
             get
             {
                 ThrowIfDisposed();
@@ -62,8 +49,6 @@ namespace githere
 
         public double MarginSize
         {
-            // Since this is a horizontal margin, its width will be bound to the width of the text view.
-            // Therefore, its size is its height.
             get
             {
                 ThrowIfDisposed();
@@ -73,7 +58,6 @@ namespace githere
 
         public bool Enabled
         {
-            // The margin should always be enabled
             get
             {
                 ThrowIfDisposed();
@@ -81,11 +65,6 @@ namespace githere
             }
         }
 
-        /// <summary>
-        /// Returns an instance of the margin if this is the margin that has been requested.
-        /// </summary>
-        /// <param name="marginName">The name of the margin requested</param>
-        /// <returns>An instance of githere or null</returns>
         public ITextViewMargin GetTextViewMargin(string marginName)
         {
             return (marginName == MarginName) ? this : null;
