@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using LibGit2Sharp;
 using Microsoft.VisualStudio.Text;
@@ -21,7 +22,7 @@ namespace githere
         {
             Height = 20;
             ClipToBounds = true;
-            statusLabel = new Label();
+            statusLabel = new Label {Foreground = new SolidColorBrush(Colors.DarkGray)};
             Children.Add(statusLabel);
 
             repo = GetRepo(textView);
