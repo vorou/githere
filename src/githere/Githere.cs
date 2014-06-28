@@ -104,6 +104,11 @@ namespace githere
             return string.Format(" +{0} ~{1} -{2}", untracked, modified, missing);
         }
 
+        private static void Log(string msg)
+        {
+            File.AppendAllText(@"c:\logs\githere.log", msg + "\r\n");
+        }
+
         private void ThrowIfDisposed()
         {
             if (_isDisposed)
