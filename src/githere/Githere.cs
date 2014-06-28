@@ -20,6 +20,7 @@ namespace githere
 
         public githere(IWpfTextView textView)
         {
+            Log("githere ctor called");
             Height = 20;
             ClipToBounds = true;
             statusLabel = new Label {Foreground = new SolidColorBrush(Colors.DarkGray)};
@@ -28,9 +29,11 @@ namespace githere
             repo = GetRepo(textView);
             if (repo == null)
             {
+                Log("repo wasn't found");
                 Visibility = Visibility.Collapsed;
                 return;
             }
+            Log("repo was found");
             var timer = new DispatcherTimer();
             timer.Tick += (o, e) => statusLabel.Content = GetRepoStatus();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -71,6 +74,7 @@ namespace githere
 
         public void Dispose()
         {
+            Log("disposing");
             if (!_isDisposed)
             {
                 GC.SuppressFinalize(this);
@@ -89,8 +93,11 @@ namespace githere
 
         private string GetRepoStatus()
         {
+            Log("invoked GetRepoStatus()");
             var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
-            return string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
+            var repoStatus = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
+            Log("repo status was read: " + repoStatus);
+            return repoStatus;
         }
 
         private static string FormatWorkingDirStatus(RepositoryStatus index)
