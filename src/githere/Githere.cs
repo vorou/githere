@@ -35,7 +35,22 @@ namespace githere
             }
             Log("repo was found");
             var timer = new DispatcherTimer();
-            timer.Tick += (o, e) => statusLabel.Content = GetRepoStatus();
+            timer.Tick += (o, e) =>
+                          {
+                              Log("tick fired, trying to read status");
+                              string status;
+                              try
+                              {
+                                  status = GetRepoStatus();
+                              }
+                              catch (Exception exception)
+                              {
+                                  status = exception.Message;
+                                  Log(exception.Message + " " + exception.ToString());
+                              }
+                              Log("status: " + status);
+                              statusLabel.Content = status; 
+                          };
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
         }
