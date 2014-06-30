@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -49,7 +48,7 @@ namespace githere
                                   Log(exception.Message + " " + exception.ToString());
                               }
                               Log("status: " + status);
-                              statusLabel.Content = status; 
+                              statusLabel.Content = status;
                           };
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
