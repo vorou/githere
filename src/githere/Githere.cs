@@ -15,7 +15,7 @@ namespace githere
     internal class githere : Canvas, IWpfTextViewMargin
     {
         public const string MarginName = "githere";
-        private readonly string repoDir;
+        private readonly Repository repo;
         private readonly Label statusLabel;
         private bool _isDisposed;
 
@@ -27,8 +27,8 @@ namespace githere
             statusLabel = new Label {FontFamily = new FontFamily("Consolas"), Foreground = new SolidColorBrush(Colors.DarkGray)};
             Children.Add(statusLabel);
 
-            repoDir = GetRepoDir(textView);
-            if (repoDir == null)
+            repo = GetRepo(textView);
+            if (repo == null)
             {
                 Log("repo wasn't found");
                 Visibility = Visibility.Collapsed;
@@ -98,20 +98,18 @@ namespace githere
             }
         }
 
-        private static string GetRepoDir(IWpfTextView textView)
+        private static Repository GetRepo(IWpfTextView textView)
         {
             ITextDocument document;
             textView.TextDataModel.DocumentBuffer.Properties.TryGetProperty(typeof (ITextDocument), out document);
             var workingDir = Path.GetDirectoryName(document.FilePath);
-            return Repository.Discover(workingDir);
+            var repoDir = Repository.Discover(workingDir);
+            return repoDir == null ? null : new Repository(repoDir);
         }
 
         private string GetRepoStatus()
         {
             Log("invoked GetRepoStatus()");
-            if (string.IsNullOrWhiteSpace(repoDir))
-                throw new InvalidOperationException("repo should be located first");
-            var repo = new Repository(repoDir);
             var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
             var repoStatus = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
             Log("repo status was read: " + repoStatus);
