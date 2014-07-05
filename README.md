@@ -1,6 +1,6 @@
 githere
 =======
-short git status in [branch +~-] format right in the bottom of your IDE
+short git status in `[master +1 ~0 -3]` format right in the bottom of your IDE
 
 ![scr](http://visualstudiogallery.msdn.microsoft.com/0344701c-45e4-4b3b-8d2b-92e5c8ad5bbe/image/file/136883/1/w3lk4jD.png?Id=136883)
 
