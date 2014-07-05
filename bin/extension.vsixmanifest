@@ -1,0 +1,18 @@
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011">
+  <Metadata>
+    <Identity Id="githere..9cbe2bf7-1f20-4097-812f-391d058fa8ec" Version="0.1.0" Language="en-US" Publisher="vorou" />
+    <DisplayName>githere</DisplayName>
+    <Description xml:space="preserve">yo dawg I heard you like git status so we put it in your IDE</Description>
+    <MoreInfo>https://github.com/vorou/githere</MoreInfo>
+    <Icon>githere-icon-32x32.png</Icon>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="4.5" />
+  </Dependencies>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" Path="githere.dll" />
+  </Assets>
+</PackageManifest>
