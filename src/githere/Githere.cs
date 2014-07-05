@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -126,6 +127,7 @@ namespace githere
             return string.Format(" +{0} ~{1} -{2}", untracked, modified, missing);
         }
 
+        [Conditional("DEBUG")]
         private static void Log(string msg)
         {
             File.AppendAllText(@"c:\logs\githere.log", msg + "\r\n");
