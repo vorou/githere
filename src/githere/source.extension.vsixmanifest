@@ -7,6 +7,7 @@
     <DisplayName>githere</DisplayName>
     <Description xml:space="preserve">yo dawg I heard you like git status so we put it in your IDE</Description>
     <MoreInfo>https://github.com/vorou/githere</MoreInfo>
+    <Icon>githere-icon-32x32.png</Icon>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
