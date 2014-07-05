@@ -5,16 +5,27 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "githere", "githere\githere.csproj", "{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibGit2Sharp", "libgit2sharp\LibGit2Sharp\LibGit2Sharp.csproj", "{EE6ED99F-CB12-4683-B055-D28FC7357A34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Leaks|Any CPU = Leaks|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Leaks|Any CPU.ActiveCfg = Release|Any CPU
+		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Leaks|Any CPU.Build.0 = Release|Any CPU
 		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B54E5A2-41F8-44B0-AE46-AE40F8A25B60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Leaks|Any CPU.ActiveCfg = Leaks|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Leaks|Any CPU.Build.0 = Leaks|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6ED99F-CB12-4683-B055-D28FC7357A34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
