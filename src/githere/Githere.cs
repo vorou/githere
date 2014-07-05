@@ -24,7 +24,7 @@ namespace githere
             Log("githere ctor called");
             Height = 20;
             ClipToBounds = true;
-            statusLabel = new Label {Foreground = new SolidColorBrush(Colors.DarkGray)};
+            statusLabel = new Label {FontFamily = new FontFamily("Consolas"), Foreground = new SolidColorBrush(Colors.DarkGray)};
             Children.Add(statusLabel);
 
             repoDir = GetRepoDir(textView);
