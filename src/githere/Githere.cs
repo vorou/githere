@@ -111,7 +111,7 @@ namespace githere
         {
             Log("invoked GetRepoStatus()");
             var workingDirStatusString = FormatWorkingDirStatus(repo.RetrieveStatus());
-            var repoStatus = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
+            var repoStatus = $"[{repo.Head.FriendlyName}{workingDirStatusString}]";
             Log("repo status was read: " + repoStatus);
             return repoStatus;
         }
@@ -124,7 +124,7 @@ namespace githere
             if (untracked == 0 && modified == 0 && missing == 0)
                 return "";
 
-            return string.Format(" +{0} ~{1} -{2}", untracked, modified, missing);
+            return $" +{untracked} ~{modified} -{missing}";
         }
 
         [Conditional("DEBUG")]
