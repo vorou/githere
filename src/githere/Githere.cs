@@ -110,7 +110,7 @@ namespace githere
         private string GetRepoStatus()
         {
             Log("invoked GetRepoStatus()");
-            var workingDirStatusString = FormatWorkingDirStatus(repo.Index.RetrieveStatus());
+            var workingDirStatusString = FormatWorkingDirStatus(repo.RetrieveStatus());
             var repoStatus = string.Format("[{0}{1}]", repo.Head.Name, workingDirStatusString);
             Log("repo status was read: " + repoStatus);
             return repoStatus;

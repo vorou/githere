@@ -1,9 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -38,6 +43,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.CoreUtility" />
@@ -68,15 +74,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\libgit2sharp\LibGit2Sharp\bin\Release\NativeBinaries\x86\git2-e93206e.dll">
-      <Link>git2-e93206e.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
+    <Content Include="..\libgit2sharp\LibGit2Sharp\bin\Release\NativeBinaries\x86\git2-e0902fb.dll">
+      <Link>git2-e0902fb.dll</Link>
     </Content>
-    <Content Include="..\libgit2sharp\LibGit2Sharp\bin\Release\NativeBinaries\x86\git2-e93206e.pdb">
-      <Link>git2-e93206e.pdb</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
+    <Content Include="..\libgit2sharp\LibGit2Sharp\bin\Release\NativeBinaries\x86\git2-e0902fb.pdb">
+      <Link>git2-e0902fb.pdb</Link>
     </Content>
     <Content Include="githere-icon-32x32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

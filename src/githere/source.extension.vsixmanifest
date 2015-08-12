@@ -3,14 +3,14 @@
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011"
                  xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="githere..9cbe2bf7-1f20-4097-812f-391d058fa8ec" Version="0.1.1" Language="en-US" Publisher="vorou" />
+    <Identity Id="githere" Version="0.1.2" Language="en-US" Publisher="vorou" />
     <DisplayName>githere</DisplayName>
     <Description xml:space="preserve">yo dawg I heard you like git status so we put it in your IDE</Description>
     <MoreInfo>https://github.com/vorou/githere</MoreInfo>
     <Icon>githere-icon-32x32.png</Icon>
   </Metadata>
   <Installation>
-    <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="12.0" />
+    <InstallationTarget Version="[12.0,15.0)" Id="Microsoft.VisualStudio.Pro" />
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="4.5" />
