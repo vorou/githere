@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Threading;
 using LibGit2Sharp;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -15,7 +14,8 @@ namespace githere
     internal class githere : Canvas, IWpfTextViewMargin
     {
         public const string MarginName = "githere";
-        private readonly Repository repo;
+        private static Repository repo;
+        private static FileSystemWatcher HeadWatcher;
         private readonly Label statusLabel;
         private bool _isDisposed;
 
@@ -27,7 +27,8 @@ namespace githere
             statusLabel = new Label {FontFamily = new FontFamily("Consolas"), Foreground = new SolidColorBrush(Colors.DarkGray)};
             Children.Add(statusLabel);
 
-            repo = GetRepo(textView);
+            if (repo == null)
+                repo = GetRepo(textView);
             if (repo == null)
             {
                 Log("repo wasn't found");
@@ -35,25 +36,31 @@ namespace githere
                 return;
             }
             Log("repo was found");
-            var timer = new DispatcherTimer();
-            timer.Tick += (o, e) =>
-                          {
-                              Log("tick fired, trying to read status");
-                              string status;
-                              try
-                              {
-                                  status = GetRepoStatus();
-                              }
-                              catch (Exception exception)
-                              {
-                                  status = exception.Message;
-                                  Log(exception.Message + " " + exception.ToString());
-                              }
-                              Log("status: " + status);
-                              statusLabel.Content = status;
-                          };
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Start();
+            if (HeadWatcher == null)
+            {
+                var headWatcher = new FileSystemWatcher(repo.Info.Path) {Filter = "HEAD"};
+                Log("filesystemwatcher created");
+                headWatcher.Changed += (o, e) =>
+                                       {
+                                           Log("HEAD changed, trying to read status");
+                                           string status;
+                                           try
+                                           {
+                                               status = GetRepoStatus();
+                                           }
+                                           catch (Exception exception)
+                                           {
+                                               status = exception.Message;
+                                               Log(exception.Message + " " + exception.ToString());
+                                           }
+                                           Log("status: " + status);
+                                           statusLabel.Content = status;
+                                       };
+                Log("filesystemwatcher subscribed to");
+                headWatcher.EnableRaisingEvents = true;
+                Log("filesystemwatcher enabled");
+                HeadWatcher = headWatcher;
+            }
         }
 
         public FrameworkElement VisualElement
